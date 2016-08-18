@@ -1,0 +1,138 @@
+CCS PCM C Compiler, Version 3.127, 16805
+
+               Filename: Y:\マイコン制御\p873_016.LST
+
+               ROM used: 96 (2%)
+                         Largest free fragment is 2048
+               RAM used: 14 (7%) at main() level
+                         14 (7%) worst case
+               Stack:    1 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   02A
+0003:  NOP
+....................  //	<< p873_016.c >>		2012/02 Y.Takada  
+.................... //	Port_B 　: LED_bord  
+.................... //  
+.................... #include <j:\ccs-c\devices\16f873a.h> 
+....................  //////// Standard Header file for the PIC16F873A device ////////////////  
+.................... #device PIC16F873A  
+.................... #list  
+....................  
+.................... #Fuses HS,NOWDT,NOPROTECT,NOLVP  
+.................... #use delay(clock=20000000)  
+*
+0016:  MOVLW  2D
+0017:  MOVWF  04
+0018:  MOVF   00,W
+0019:  BTFSC  03.2
+001A:  GOTO   028
+001B:  MOVLW  06
+001C:  MOVWF  21
+001D:  CLRF   20
+001E:  DECFSZ 20,F
+001F:  GOTO   01E
+0020:  DECFSZ 21,F
+0021:  GOTO   01D
+0022:  MOVLW  7B
+0023:  MOVWF  20
+0024:  DECFSZ 20,F
+0025:  GOTO   024
+0026:  DECFSZ 00,F
+0027:  GOTO   01B
+0028:  BCF    0A.3
+0029:  GOTO   05A (RETURN)
+.................... void led_tenmetu(void);  
+.................... void main(void)  
+.................... {  
+.................... 	int i,i1,i2,i3,ax,bx;  
+.................... 	long const clb[7] = { 0xdd, 0xcc, 0xee, 0xaa, 0xbb, 0x99, 0x88 };  
+*
+0004:  BCF    0A.0
+0005:  BCF    0A.1
+0006:  BCF    0A.2
+0007:  ADDWF  02,F
+0008:  RETLW  DD
+0009:  RETLW  00
+000A:  RETLW  CC
+000B:  RETLW  00
+000C:  RETLW  EE
+000D:  RETLW  00
+000E:  RETLW  AA
+000F:  RETLW  00
+0010:  RETLW  BB
+0011:  RETLW  00
+0012:  RETLW  99
+0013:  RETLW  00
+0014:  RETLW  88
+0015:  RETLW  00
+*
+002A:  CLRF   04
+002B:  MOVLW  1F
+002C:  ANDWF  03,F
+002D:  MOVLW  07
+002E:  BSF    03.5
+002F:  MOVWF  1F
+0030:  MOVLW  07
+0031:  BCF    03.5
+0032:  MOVWF  1F
+.................... 	set_tris_a(0xff);  
+0033:  MOVLW  FF
+0034:  BSF    03.5
+0035:  MOVWF  05
+.................... 	set_tris_b(0x00);					//	PORT_B		output	LED  
+0036:  MOVLW  00
+0037:  MOVWF  06
+.................... 	output_b(0xff);  
+0038:  MOVLW  00
+0039:  MOVWF  06
+003A:  MOVLW  FF
+003B:  BCF    03.5
+003C:  MOVWF  06
+.................... 	  
+.................... 	while (1) {  
+.................... 	i = 0;  
+003D:  CLRF   26
+.................... 		while ( i != 7 ) {  
+003E:  MOVF   26,W
+003F:  SUBLW  07
+0040:  BTFSC  03.2
+0041:  GOTO   05E
+.................... 			output_b( clb[i] );  
+0042:  BCF    03.0
+0043:  RLF    26,W
+0044:  MOVWF  20
+0045:  MOVF   20,W
+0046:  MOVWF  2C
+0047:  INCF   2C,W
+0048:  CALL   004
+0049:  MOVWF  23
+004A:  MOVF   2C,W
+004B:  CALL   004
+004C:  MOVWF  2D
+004D:  MOVF   23,W
+004E:  MOVWF  2E
+004F:  MOVLW  00
+0050:  BSF    03.5
+0051:  MOVWF  06
+0052:  BCF    03.5
+0053:  MOVF   2D,W
+0054:  MOVWF  06
+.................... 			delay_ms(1000);  
+0055:  MOVLW  04
+0056:  MOVWF  2C
+0057:  MOVLW  FA
+0058:  MOVWF  2D
+0059:  GOTO   016
+005A:  DECFSZ 2C,F
+005B:  GOTO   057
+.................... 			i++;  
+005C:  INCF   26,F
+.................... 		}  
+005D:  GOTO   03E
+.................... 	}  
+005E:  GOTO   03D
+.................... } 
+005F:  SLEEP

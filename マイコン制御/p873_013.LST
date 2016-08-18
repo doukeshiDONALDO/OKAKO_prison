@@ -1,0 +1,134 @@
+CCS PCM C Compiler, Version 3.127, 16805
+
+               Filename: Y:\マイコン制御\p873_013.LST
+
+               ROM used: 86 (2%)
+                         Largest free fragment is 2048
+               RAM used: 9 (5%) at main() level
+                         10 (5%) worst case
+               Stack:    1 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   018
+0003:  NOP
+....................  //	<< p873_013.c >>		2012/02 Y.Takada  
+.................... //	sw0が押されたらLEDを右回転させる  
+.................... //  
+.................... #include <j:\ccs-c\devices\16f873a.h> 
+....................  //////// Standard Header file for the PIC16F873A device ////////////////  
+.................... #device PIC16F873A  
+.................... #list  
+....................  
+.................... #Fuses HS,NOWDT,NOPROTECT,NOLVP  
+.................... #use delay(clock=20000000)  
+0004:  MOVLW  2A
+0005:  MOVWF  04
+0006:  MOVF   00,W
+0007:  BTFSC  03.2
+0008:  GOTO   016
+0009:  MOVLW  06
+000A:  MOVWF  21
+000B:  CLRF   20
+000C:  DECFSZ 20,F
+000D:  GOTO   00C
+000E:  DECFSZ 21,F
+000F:  GOTO   00B
+0010:  MOVLW  7B
+0011:  MOVWF  20
+0012:  DECFSZ 20,F
+0013:  GOTO   012
+0014:  DECFSZ 00,F
+0015:  GOTO   009
+0016:  BCF    0A.3
+0017:  GOTO   048 (RETURN)
+.................... void led_tenmetu(void);  
+.................... void main(void)  
+.................... {  
+.................... 	int i,aa,bb;  
+0018:  CLRF   04
+0019:  MOVLW  1F
+001A:  ANDWF  03,F
+001B:  MOVLW  07
+001C:  BSF    03.5
+001D:  MOVWF  1F
+001E:  MOVLW  07
+001F:  BCF    03.5
+0020:  MOVWF  1F
+.................... 	set_tris_a(0x1f);  
+0021:  MOVLW  1F
+0022:  BSF    03.5
+0023:  MOVWF  05
+.................... 	set_tris_b(0x00);					  
+0024:  MOVLW  00
+0025:  MOVWF  06
+.................... 	output_b(0x00);  
+0026:  MOVLW  00
+0027:  MOVWF  06
+0028:  BCF    03.5
+0029:  CLRF   06
+.................... 	  
+.................... 	aa = 1;  
+002A:  MOVLW  01
+002B:  MOVWF  27
+.................... 	while( aa != 0 )	{  
+002C:  MOVF   27,F
+002D:  BTFSC  03.2
+002E:  GOTO   037
+.................... 		aa = input_a() & 0x01;  
+002F:  MOVLW  FF
+0030:  BSF    03.5
+0031:  MOVWF  05
+0032:  BCF    03.5
+0033:  MOVF   05,W
+0034:  ANDLW  01
+0035:  MOVWF  27
+.................... 	}  
+0036:  GOTO   02C
+.................... 	i = 0;  
+0037:  CLRF   26
+.................... 	bb = 0x80;  
+0038:  MOVLW  80
+0039:  MOVWF  28
+.................... 	while(1)	{  
+.................... 		if( i >=  0 )	{  
+.................... 			output_b(bb^0xff);  
+003A:  MOVF   28,W
+003B:  XORLW  FF
+003C:  MOVWF  29
+003D:  MOVLW  00
+003E:  BSF    03.5
+003F:  MOVWF  06
+0040:  BCF    03.5
+0041:  MOVF   29,W
+0042:  MOVWF  06
+.................... 			delay_ms(300);  
+0043:  MOVLW  02
+0044:  MOVWF  29
+0045:  MOVLW  96
+0046:  MOVWF  2A
+0047:  GOTO   004
+0048:  DECFSZ 29,F
+0049:  GOTO   045
+.................... 			bb >>= 1;  
+004A:  BCF    03.0
+004B:  RRF    28,F
+.................... 			i++;  
+004C:  INCF   26,F
+.................... 		}  
+.................... 		if( i > 7 )	{  
+004D:  MOVF   26,W
+004E:  SUBLW  07
+004F:  BTFSC  03.0
+0050:  GOTO   054
+.................... 			i = 0;  
+0051:  CLRF   26
+.................... 			bb = 0x80;  
+0052:  MOVLW  80
+0053:  MOVWF  28
+.................... 		}  
+.................... 	}  
+0054:  GOTO   03A
+.................... }	 
+0055:  SLEEP

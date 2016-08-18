@@ -1,0 +1,282 @@
+CCS PCM C Compiler, Version 3.127, 16805
+
+               Filename: G:\マイコン制御\strike_out_2.LST
+
+               ROM used: 214 (5%)
+                         Largest free fragment is 2048
+               RAM used: 18 (9%) at main() level
+                         20 (10%) worst case
+               Stack:    2 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   096
+0003:  NOP
+....................  #include <j:\ccs-c\devices\16f873a.h> 
+....................  //////// Standard Header file for the PIC16F873A device ////////////////  
+.................... #device PIC16F873A  
+.................... #list  
+....................  
+.................... #Fuses 	HS,NOWDT,NOPROTECT,NOLVP  
+.................... #use	delay(clock=20000000)  
+*
+0082:  MOVLW  31
+0083:  MOVWF  04
+0084:  MOVF   00,W
+0085:  BTFSC  03.2
+0086:  GOTO   094
+0087:  MOVLW  06
+0088:  MOVWF  21
+0089:  CLRF   20
+008A:  DECFSZ 20,F
+008B:  GOTO   08A
+008C:  DECFSZ 21,F
+008D:  GOTO   089
+008E:  MOVLW  7B
+008F:  MOVWF  20
+0090:  DECFSZ 20,F
+0091:  GOTO   090
+0092:  DECFSZ 00,F
+0093:  GOTO   087
+0094:  BCF    0A.3
+0095:  GOTO   0D3 (RETURN)
+.................... int a,b,c,aa,bb,cc,aaa,bbb,ccc,check,cnt;  
+.................... void sub (void);  
+.................... void sub_2 (void);  
+.................... void main(void)  
+.................... {  
+0096:  CLRF   04
+0097:  MOVLW  1F
+0098:  ANDWF  03,F
+0099:  MOVLW  07
+009A:  BSF    03.5
+009B:  MOVWF  1F
+009C:  MOVLW  07
+009D:  BCF    03.5
+009E:  MOVWF  1F
+009F:  MOVLW  FF
+00A0:  MOVWF  30
+.................... 	set_tris_a(0x01);  
+00A1:  MOVLW  01
+00A2:  BSF    03.5
+00A3:  MOVWF  05
+.................... 	set_tris_b(0x81);  
+00A4:  MOVLW  81
+00A5:  MOVWF  06
+.................... 	set_tris_c(0x81);  
+00A6:  MOVLW  81
+00A7:  MOVWF  07
+00A8:  BCF    03.5
+00A9:  MOVWF  30
+....................   
+.................... 	a = 0;				//  a,b,c	当たり結果保持変数  
+00AA:  CLRF   25
+.................... 	b = 0;  
+00AB:  CLRF   26
+.................... 	a = 0;  
+00AC:  CLRF   25
+.................... 	aa = 0;				// aa,bb,cc	LED七変化変数  
+00AD:  CLRF   28
+.................... 	bb = 0;  
+00AE:  CLRF   29
+.................... 	cc = 0;  
+00AF:  CLRF   2A
+.................... 	aaa = 0x10;			// aaa,bbb,ccc	LED出力変数  
+00B0:  MOVLW  10
+00B1:  MOVWF  2B
+.................... 	bbb = 0x10;  
+00B2:  MOVLW  10
+00B3:  MOVWF  2C
+.................... 	ccc = 0x10;  
+00B4:  MOVLW  10
+00B5:  MOVWF  2D
+.................... //	aaa &= 0x7e;  
+.................... //	bbb &= 0x7e;  
+.................... //	ccc &= 0x7e;   
+....................   
+.................... 	while( 1 ){  
+.................... 		if(input_b() & 0x80 == 0){  
+00B6:  MOVLW  FF
+00B7:  BSF    03.5
+00B8:  MOVWF  06
+00B9:  BCF    03.5
+00BA:  MOVF   06,W
+00BB:  ANDLW  00
+00BC:  XORLW  00
+00BD:  BTFSC  03.2
+00BE:  GOTO   0C2
+.................... 			a = 0;  
+00BF:  CLRF   25
+.................... 			b = 0;  
+00C0:  CLRF   26
+.................... 			a = 0;  
+00C1:  CLRF   25
+.................... 		}  
+.................... 		sub();  
+00C2:  GOTO   019
+.................... 		output_b(bbb);  
+00C3:  MOVLW  00
+00C4:  BSF    03.5
+00C5:  MOVWF  06
+00C6:  BCF    03.5
+00C7:  MOVF   2C,W
+00C8:  MOVWF  06
+.................... 		output_c(ccc);  
+00C9:  MOVLW  00
+00CA:  MOVWF  30
+00CB:  BSF    03.5
+00CC:  MOVWF  07
+00CD:  BCF    03.5
+00CE:  MOVF   2D,W
+00CF:  MOVWF  07
+.................... 		delay_ms(100);  
+00D0:  MOVLW  64
+00D1:  MOVWF  31
+00D2:  GOTO   082
+.................... 		cnt++;  
+00D3:  INCF   2F,F
+.................... 	}  
+00D4:  GOTO   0B6
+.................... }  
+....................   
+00D5:  SLEEP
+.................... void sub (void) {  
+.................... 	check = input_a() & 0x01;  
+*
+0019:  MOVLW  FF
+001A:  BSF    03.5
+001B:  MOVWF  05
+001C:  BCF    03.5
+001D:  MOVF   05,W
+001E:  ANDLW  01
+001F:  MOVWF  2E
+.................... 	if(check)	a = 1;  
+0020:  MOVF   2E,F
+0021:  BTFSC  03.2
+0022:  GOTO   025
+0023:  MOVLW  01
+0024:  MOVWF  25
+....................   
+.................... 	check = input_b() & 0x01;  
+0025:  MOVLW  FF
+0026:  BSF    03.5
+0027:  MOVWF  06
+0028:  BCF    03.5
+0029:  MOVF   06,W
+002A:  ANDLW  01
+002B:  MOVWF  2E
+.................... 	if(check)	b = 1;  
+002C:  MOVF   2E,F
+002D:  BTFSC  03.2
+002E:  GOTO   031
+002F:  MOVLW  01
+0030:  MOVWF  26
+....................   
+.................... 	check = input_c() & 0x01;  
+0031:  MOVLW  FF
+0032:  MOVWF  30
+0033:  BSF    03.5
+0034:  MOVWF  07
+0035:  BCF    03.5
+0036:  MOVF   07,W
+0037:  ANDLW  01
+0038:  MOVWF  2E
+.................... 	if(check)	c = 1;  
+0039:  MOVF   2E,F
+003A:  BTFSC  03.2
+003B:  GOTO   03E
+003C:  MOVLW  01
+003D:  MOVWF  27
+....................   
+.................... 	if(a != 0){   
+003E:  MOVF   25,F
+003F:  BTFSC  03.2
+0040:  GOTO   054
+.................... 		if(cnt % 5 == 0) aa++;  
+0041:  MOVF   2F,W
+0042:  MOVWF  31
+0043:  MOVLW  05
+0044:  MOVWF  32
+0045:  CALL   004
+0046:  MOVF   20,F
+0047:  BTFSS  03.2
+0048:  GOTO   04A
+0049:  INCF   28,F
+.................... 		if(aa >= 0x08) aa = 0x01;  
+004A:  MOVF   28,W
+004B:  SUBLW  07
+004C:  BTFSC  03.0
+004D:  GOTO   050
+004E:  MOVLW  01
+004F:  MOVWF  28
+.................... 		aaa = aa << 1;  
+0050:  BCF    03.0
+0051:  RLF    28,W
+0052:  MOVWF  2B
+.................... 		aaa |= 0x20;  
+0053:  BSF    2B.5
+.................... //		aaa = ~aaa;  
+.................... 	}  
+.................... 	if(b != 0){   
+0054:  MOVF   26,F
+0055:  BTFSC  03.2
+0056:  GOTO   06A
+.................... 		if(cnt % 5 == 0) bb++;  
+0057:  MOVF   2F,W
+0058:  MOVWF  31
+0059:  MOVLW  05
+005A:  MOVWF  32
+005B:  CALL   004
+005C:  MOVF   20,F
+005D:  BTFSS  03.2
+005E:  GOTO   060
+005F:  INCF   29,F
+.................... 		if(bb >= 0x08) bb = 0x01;  
+0060:  MOVF   29,W
+0061:  SUBLW  07
+0062:  BTFSC  03.0
+0063:  GOTO   066
+0064:  MOVLW  01
+0065:  MOVWF  29
+.................... 		bbb = bb << 1;  
+0066:  BCF    03.0
+0067:  RLF    29,W
+0068:  MOVWF  2C
+.................... 		bbb |= 0x20;  
+0069:  BSF    2C.5
+.................... //		bbb = ~bbb;   
+.................... 	}  
+.................... 	if(c != 0){   
+006A:  MOVF   27,F
+006B:  BTFSC  03.2
+006C:  GOTO   080
+.................... 		if(cnt % 5 == 0) cc++;  
+006D:  MOVF   2F,W
+006E:  MOVWF  31
+006F:  MOVLW  05
+0070:  MOVWF  32
+0071:  CALL   004
+0072:  MOVF   20,F
+0073:  BTFSS  03.2
+0074:  GOTO   076
+0075:  INCF   2A,F
+.................... 		if(cc >= 0x08) cc = 0x01;  
+0076:  MOVF   2A,W
+0077:  SUBLW  07
+0078:  BTFSC  03.0
+0079:  GOTO   07C
+007A:  MOVLW  01
+007B:  MOVWF  2A
+.................... 		ccc = cc << 1;  
+007C:  BCF    03.0
+007D:  RLF    2A,W
+007E:  MOVWF  2D
+.................... 		ccc |= 0x20;  
+007F:  BSF    2D.5
+.................... //		ccc = ~ccc;  
+.................... 	}  
+0080:  BCF    0A.3
+0081:  GOTO   0C3 (RETURN)
+.................... }  
+....................  

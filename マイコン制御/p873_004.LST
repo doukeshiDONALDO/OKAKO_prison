@@ -1,0 +1,87 @@
+CCS PCM C Compiler, Version 3.127, 16805
+
+               Filename: Y:\マイコン制御\p873_004.LST
+
+               ROM used: 54 (1%)
+                         Largest free fragment is 2048
+               RAM used: 6 (3%) at main() level
+                         7 (4%) worst case
+               Stack:    1 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   018
+0003:  NOP
+....................  //	<< p873_004.c >>		2012/02 Y.Takada  
+.................... //	Port_B 　: LED_bord  
+.................... //  
+.................... #include <j:\ccs-c\devices\16f873a.h> 
+....................  //////// Standard Header file for the PIC16F873A device ////////////////  
+.................... #device PIC16F873A  
+.................... #list  
+....................  
+.................... #Fuses HS,NOWDT,NOPROTECT,NOLVP  
+.................... #use delay(clock=20000000)  
+0004:  MOVLW  27
+0005:  MOVWF  04
+0006:  MOVF   00,W
+0007:  BTFSC  03.2
+0008:  GOTO   016
+0009:  MOVLW  06
+000A:  MOVWF  21
+000B:  CLRF   20
+000C:  DECFSZ 20,F
+000D:  GOTO   00C
+000E:  DECFSZ 21,F
+000F:  GOTO   00B
+0010:  MOVLW  7B
+0011:  MOVWF  20
+0012:  DECFSZ 20,F
+0013:  GOTO   012
+0014:  DECFSZ 00,F
+0015:  GOTO   009
+0016:  BCF    0A.3
+0017:  GOTO   033 (RETURN)
+.................... void main(void)  
+.................... {  
+.................... 	signed int i;  
+0018:  CLRF   04
+0019:  MOVLW  1F
+001A:  ANDWF  03,F
+001B:  MOVLW  07
+001C:  BSF    03.5
+001D:  MOVWF  1F
+001E:  MOVLW  07
+001F:  BCF    03.5
+0020:  MOVWF  1F
+.................... 	set_tris_b(0x00);					//	PORT_B		output	LED  
+0021:  MOVLW  00
+0022:  BSF    03.5
+0023:  MOVWF  06
+.................... 	output_b(0x00);  
+0024:  MOVLW  00
+0025:  MOVWF  06
+0026:  BCF    03.5
+0027:  CLRF   06
+.................... 	  
+.................... 	for(i=-128;i<=128;i++)	{					  
+0028:  MOVLW  80
+0029:  MOVWF  26
+.................... 		output_b(i);						  
+002A:  MOVLW  00
+002B:  BSF    03.5
+002C:  MOVWF  06
+002D:  BCF    03.5
+002E:  MOVF   26,W
+002F:  MOVWF  06
+.................... 		delay_ms(50);					//	50ms待つ  
+0030:  MOVLW  32
+0031:  MOVWF  27
+0032:  GOTO   004
+.................... 						  
+.................... 	}  
+0033:  INCF   26,F
+0034:  GOTO   02A
+.................... } 
+0035:  SLEEP

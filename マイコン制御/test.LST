@@ -1,0 +1,156 @@
+CCS PCM C Compiler, Version 3.127, 16805
+
+               Filename: Y:\マイコン制御\test.LST
+
+               ROM used: 105 (3%)
+                         Largest free fragment is 2048
+               RAM used: 10 (5%) at main() level
+                         11 (6%) worst case
+               Stack:    1 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   018
+0003:  NOP
+....................  //	<< p873_check.c >>		2011/07 K.Nishi  
+.................... //	Port_A	: Switch_bord  
+.................... //	Port_B or PORT_C　: LED_bord  
+.................... //  
+.................... #include <j:\ccs-c\devices\16f873a.h> 
+....................  //////// Standard Header file for the PIC16F873A device ////////////////  
+.................... #device PIC16F873A  
+.................... #list  
+....................  
+.................... #Fuses HS,NOWDT,NOPROTECT,NOLVP  
+.................... #use delay(clock=20000000)  
+0004:  MOVLW  2A
+0005:  MOVWF  04
+0006:  MOVF   00,W
+0007:  BTFSC  03.2
+0008:  GOTO   016
+0009:  MOVLW  06
+000A:  MOVWF  21
+000B:  CLRF   20
+000C:  DECFSZ 20,F
+000D:  GOTO   00C
+000E:  DECFSZ 21,F
+000F:  GOTO   00B
+0010:  MOVLW  7B
+0011:  MOVWF  20
+0012:  DECFSZ 20,F
+0013:  GOTO   012
+0014:  DECFSZ 00,F
+0015:  GOTO   009
+0016:  BCF    0A.3
+0017:  GOTO   05D (RETURN)
+.................... void main(void)  
+.................... {  
+.................... 	int i,aa,bb;  
+0018:  CLRF   04
+0019:  MOVLW  1F
+001A:  ANDWF  03,F
+001B:  MOVLW  07
+001C:  BSF    03.5
+001D:  MOVWF  1F
+001E:  MOVLW  07
+001F:  BCF    03.5
+0020:  MOVWF  1F
+0021:  MOVLW  FF
+0022:  MOVWF  25
+.................... 	set_tris_a(0x1f);					//	PORT_A0～A5	input  
+0023:  MOVLW  1F
+0024:  BSF    03.5
+0025:  MOVWF  05
+.................... 	set_tris_b(0x00);  
+0026:  MOVLW  00
+0027:  MOVWF  06
+.................... 	set_tris_c(0x00);  
+0028:  MOVLW  00
+0029:  MOVWF  07
+002A:  BCF    03.5
+002B:  MOVWF  25
+.................... 								//	PORT_B&C	output	LED  
+.................... 	output_b(0x00);  
+002C:  MOVLW  00
+002D:  BSF    03.5
+002E:  MOVWF  06
+002F:  BCF    03.5
+0030:  CLRF   06
+.................... 	output_c(0x00);  
+0031:  MOVLW  00
+0032:  MOVWF  25
+0033:  BSF    03.5
+0034:  MOVWF  07
+0035:  BCF    03.5
+0036:  CLRF   07
+.................... 	aa=1;  
+0037:  MOVLW  01
+0038:  MOVWF  27
+.................... 	while( aa!=0)	{					//	sw0を押したらスタート  
+0039:  MOVF   27,F
+003A:  BTFSC  03.2
+003B:  GOTO   045
+.................... 		aa=input_a();  
+003C:  MOVLW  FF
+003D:  BSF    03.5
+003E:  MOVWF  05
+003F:  BCF    03.5
+0040:  MOVF   05,W
+0041:  MOVWF  27
+.................... 		aa=aa&0x01;  
+0042:  MOVLW  01
+0043:  ANDWF  27,F
+.................... 	}  
+0044:  GOTO   039
+.................... 	i=0;  
+0045:  CLRF   26
+.................... 	while(1)	{						//	無限ループスタート  
+.................... 		if(i==0)  
+0046:  MOVF   26,F
+0047:  BTFSS  03.2
+0048:  GOTO   04B
+.................... 		{  
+.................... 		bb=0x01;  
+0049:  MOVLW  01
+004A:  MOVWF  28
+.................... 		}  
+.................... 		output_b(bb);					//	PORT_Bに出力  
+004B:  MOVLW  00
+004C:  BSF    03.5
+004D:  MOVWF  06
+004E:  BCF    03.5
+004F:  MOVF   28,W
+0050:  MOVWF  06
+.................... 		output_c(bb);					//	PORT_Cに出力  
+0051:  MOVLW  00
+0052:  MOVWF  25
+0053:  BSF    03.5
+0054:  MOVWF  07
+0055:  BCF    03.5
+0056:  MOVF   28,W
+0057:  MOVWF  07
+.................... 		delay_ms(300);  
+0058:  MOVLW  02
+0059:  MOVWF  29
+005A:  MOVLW  96
+005B:  MOVWF  2A
+005C:  GOTO   004
+005D:  DECFSZ 29,F
+005E:  GOTO   05A
+.................... 		bb<<=1;						//	1ビットシフト  
+005F:  BCF    03.0
+0060:  RLF    28,F
+.................... 		i++;  
+0061:  INCF   26,F
+.................... 		if(i>7)	{i=0;}  
+0062:  MOVF   26,W
+0063:  SUBLW  07
+0064:  BTFSC  03.0
+0065:  GOTO   067
+0066:  CLRF   26
+.................... 	}  
+0067:  GOTO   046
+.................... }  
+....................  
+0068:  SLEEP

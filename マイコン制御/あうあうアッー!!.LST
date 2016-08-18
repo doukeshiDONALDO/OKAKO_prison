@@ -1,0 +1,272 @@
+CCS PCM C Compiler, Version 3.127, 16805
+
+               Filename: G:\マイコン制御\あうあうアッー!!.LST
+
+               ROM used: 183 (4%)
+                         Largest free fragment is 2048
+               RAM used: 17 (9%) at main() level
+                         18 (9%) worst case
+               Stack:    1 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   017
+0003:  NOP
+....................  //	<< auaua-.c >>		2012/08 M.DONALD  
+.................... //	Port_A  
+.................... //	Port_B  
+.................... //	Port_C  
+.................... #include <j:\ccs-c\devices\16f873a.h> 
+....................  //////// Standard Header file for the PIC16F873A device ////////////////  
+.................... #device PIC16F873A  
+.................... #list  
+....................  
+.................... #Fuses HS,NOWDT,NOPROTECT,NOLVP			  
+.................... #use delay(clock=20000000)  
+0004:  MOVLW  31
+0005:  MOVWF  04
+0006:  MOVF   00,W
+0007:  BTFSC  03.2
+0008:  GOTO   016
+0009:  MOVLW  06
+000A:  MOVWF  21
+000B:  CLRF   20
+000C:  DECFSZ 20,F
+000D:  GOTO   00C
+000E:  DECFSZ 21,F
+000F:  GOTO   00B
+0010:  MOVLW  7B
+0011:  MOVWF  20
+0012:  DECFSZ 20,F
+0013:  GOTO   012
+0014:  DECFSZ 00,F
+0015:  GOTO   009
+0016:  RETLW  00
+.................... int	aa,bb,cc,dd,ee,ff,gg,aaa,bbb,ccc;  
+.................... void sw_check(void);  
+.................... void sw_check2(void);  
+.................... void main(void)  
+.................... {  
+0017:  CLRF   04
+0018:  MOVLW  1F
+0019:  ANDWF  03,F
+001A:  MOVLW  07
+001B:  BSF    03.5
+001C:  MOVWF  1F
+001D:  MOVLW  07
+001E:  BCF    03.5
+001F:  MOVWF  1F
+0020:  MOVLW  FF
+0021:  MOVWF  2F
+.................... 	  
+.................... //	0x02;   
+.................... //	0x04;  
+.................... //	0x06;  
+.................... //	0x08;  
+.................... //	0x0a;  
+.................... //	0x0c;  
+.................... //	0x0e;  
+....................   
+.................... 	set_tris_a(0x01);					//	PORT_A1 input 	  
+0022:  MOVLW  01
+0023:  BSF    03.5
+0024:  MOVWF  05
+.................... 	set_tris_b(0x01);					//	PORT_B1 input	  
+0025:  MOVLW  01
+0026:  MOVWF  06
+.................... 	set_tris_c(0x01);					//	PORT_C1 input		  
+0027:  MOVLW  01
+0028:  MOVWF  07
+0029:  BCF    03.5
+002A:  MOVWF  2F
+....................   
+.................... 		aa = 0x02;  
+002B:  MOVLW  02
+002C:  MOVWF  25
+.................... 		bb = 0x04;  
+002D:  MOVLW  04
+002E:  MOVWF  26
+.................... 		cc = 0x08;  
+002F:  MOVLW  08
+0030:  MOVWF  27
+.................... 		dd = 0x10;  
+0031:  MOVLW  10
+0032:  MOVWF  28
+.................... 		ee = 0x20;  
+0033:  MOVLW  20
+0034:  MOVWF  29
+.................... 		ff = 0x40;  
+0035:  MOVLW  40
+0036:  MOVWF  2A
+.................... 		gg = 0x80;  
+0037:  MOVLW  80
+0038:  MOVWF  2B
+.................... 		aaa = 0xff;  
+0039:  MOVLW  FF
+003A:  MOVWF  2C
+....................   
+.................... 	while(1)	{		  
+.................... 	aa = input_a() & 0x01;				//	無限ループスタート  
+003B:  MOVLW  FF
+003C:  BSF    03.5
+003D:  MOVWF  05
+003E:  BCF    03.5
+003F:  MOVF   05,W
+0040:  ANDLW  01
+0041:  MOVWF  25
+.................... 	if(aa) {output_a(aa);  
+0042:  MOVF   25,F
+0043:  BTFSC  03.2
+0044:  GOTO   0AD
+0045:  MOVLW  00
+0046:  BSF    03.5
+0047:  MOVWF  05
+0048:  BCF    03.5
+0049:  MOVF   25,W
+004A:  MOVWF  05
+.................... 	delay_ms(500);  
+004B:  MOVLW  02
+004C:  MOVWF  30
+004D:  MOVLW  FA
+004E:  MOVWF  31
+004F:  CALL   004
+0050:  DECFSZ 30,F
+0051:  GOTO   04D
+.................... 	output_a(bb);  
+0052:  MOVLW  00
+0053:  BSF    03.5
+0054:  MOVWF  05
+0055:  BCF    03.5
+0056:  MOVF   26,W
+0057:  MOVWF  05
+.................... 	delay_ms(500);  
+0058:  MOVLW  02
+0059:  MOVWF  30
+005A:  MOVLW  FA
+005B:  MOVWF  31
+005C:  CALL   004
+005D:  DECFSZ 30,F
+005E:  GOTO   05A
+.................... 	output_a(cc);  
+005F:  MOVLW  00
+0060:  BSF    03.5
+0061:  MOVWF  05
+0062:  BCF    03.5
+0063:  MOVF   27,W
+0064:  MOVWF  05
+.................... 	delay_ms(500);  
+0065:  MOVLW  02
+0066:  MOVWF  30
+0067:  MOVLW  FA
+0068:  MOVWF  31
+0069:  CALL   004
+006A:  DECFSZ 30,F
+006B:  GOTO   067
+.................... 	output_a(dd);  
+006C:  MOVLW  00
+006D:  BSF    03.5
+006E:  MOVWF  05
+006F:  BCF    03.5
+0070:  MOVF   28,W
+0071:  MOVWF  05
+.................... 	delay_ms(500);  
+0072:  MOVLW  02
+0073:  MOVWF  30
+0074:  MOVLW  FA
+0075:  MOVWF  31
+0076:  CALL   004
+0077:  DECFSZ 30,F
+0078:  GOTO   074
+.................... 	output_a(ee);  
+0079:  MOVLW  00
+007A:  BSF    03.5
+007B:  MOVWF  05
+007C:  BCF    03.5
+007D:  MOVF   29,W
+007E:  MOVWF  05
+.................... 	delay_ms(500);  
+007F:  MOVLW  02
+0080:  MOVWF  30
+0081:  MOVLW  FA
+0082:  MOVWF  31
+0083:  CALL   004
+0084:  DECFSZ 30,F
+0085:  GOTO   081
+.................... 	output_a(ff);  
+0086:  MOVLW  00
+0087:  BSF    03.5
+0088:  MOVWF  05
+0089:  BCF    03.5
+008A:  MOVF   2A,W
+008B:  MOVWF  05
+.................... 	delay_ms(500);  
+008C:  MOVLW  02
+008D:  MOVWF  30
+008E:  MOVLW  FA
+008F:  MOVWF  31
+0090:  CALL   004
+0091:  DECFSZ 30,F
+0092:  GOTO   08E
+.................... 	output_a(gg);  
+0093:  MOVLW  00
+0094:  BSF    03.5
+0095:  MOVWF  05
+0096:  BCF    03.5
+0097:  MOVF   2B,W
+0098:  MOVWF  05
+.................... 	delay_ms(500);  
+0099:  MOVLW  02
+009A:  MOVWF  30
+009B:  MOVLW  FA
+009C:  MOVWF  31
+009D:  CALL   004
+009E:  DECFSZ 30,F
+009F:  GOTO   09B
+.................... 	output_a(aaa);  
+00A0:  MOVLW  00
+00A1:  BSF    03.5
+00A2:  MOVWF  05
+00A3:  BCF    03.5
+00A4:  MOVF   2C,W
+00A5:  MOVWF  05
+.................... 	delay_ms(1000);  
+00A6:  MOVLW  04
+00A7:  MOVWF  30
+00A8:  MOVLW  FA
+00A9:  MOVWF  31
+00AA:  CALL   004
+00AB:  DECFSZ 30,F
+00AC:  GOTO   0A8
+.................... }  
+.................... 	if(!aa) output_b(0x00);  
+00AD:  MOVF   25,F
+00AE:  BTFSS  03.2
+00AF:  GOTO   0B5
+00B0:  MOVLW  00
+00B1:  BSF    03.5
+00B2:  MOVWF  06
+00B3:  BCF    03.5
+00B4:  CLRF   06
+.................... 	}  
+00B5:  GOTO   03B
+.................... }  
+....................   
+00B6:  SLEEP
+.................... void sw_check() {  
+.................... 	aaa = input_a() & 0x01;  
+.................... 	bbb = input_b() & 0x01;  
+.................... 	ccc = input_c() & 0x01;	  
+.................... 	if(aaa)	aa = 0x0c;  
+.................... 	if(bbb)	bb = 0x0c;  
+.................... 	if(ccc)	cc = 0x0c;  
+.................... }  
+....................   
+.................... void sw_check2() {  
+.................... 	aaa = input_a() & 0x01;  
+.................... 	bbb = input_b() & 0x01;  
+.................... 	ccc = input_c() & 0x01;	  
+.................... 	if(aaa)	aa = 0x0e;  
+.................... 	if(bbb)	bb = 0x0e;  
+.................... 	if(ccc)	cc = 0x0e;  
+.................... } 
